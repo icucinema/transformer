@@ -25,7 +25,7 @@ class CP500Controller(ControlPoint):
     d.SetMute(ShouldMute=mute)
 
   def setsource(self, device, source):
-    sourceName = {'mono' : 0, 'sr' : 2, 'digital': 3, '70mm' : 5}.get(source, None)
+    sourceName = {'cd' : 1, 'digital' : 3, 'pc': 4, '35mm' : 8}.get(source, None)
     if sourceName is None:
       return
     d = device.get_service_by_type(service)
