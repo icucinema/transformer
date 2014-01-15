@@ -10,22 +10,27 @@ cp500_type = 'urn:schemas-upnp-org:device:CP500:1'
 class CP500Controller(ControlPoint):
   def __init__(self):
     ControlPoint.__init__(self)
+    self.subscribe('new_device_event', self.device_found)
+
+  def device_found(self, dev):
+    print "Found CP500"
+    self.dev = dev
 
   def volmax(self, device):
     d = device.get_service_by_type(service)
-    d.SetVolume(99)
+    d.SetVolume(NewVolume=99)
 
   def volmin(self, device):
     d = device.get_service_by_type(service)
-    d.SetVolume(0)
+    d.SetVolume(NewVolume=0)
 
   def mute(self, device):
     d = device.get_service_by_type(service)
-    d.SetMute(True)
+    d.SetMute(ShouldMute='1')
 
   def unmute(self, device):
     d = device.get_service_by_type(service)
-    d.SetMute(False)
+    d.SetMute(ShouldMute='0')
 
   def main(self):
     commands = {'volmax': self.volmax,
@@ -34,11 +39,11 @@ class CP500Controller(ControlPoint):
                 'unmute': self.unmute}
 
     while True:
-      input = raw_input('! ').strip()
-      if input not in commands:
+      i = raw_input('! ').strip()
+      if i not in commands:
         print "?"
       else:
-        commands[input]()
+        commands[i](self.dev)
 
 ctl = CP500Controller()
 ctl.start()

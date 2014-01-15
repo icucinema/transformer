@@ -5,15 +5,15 @@
     <minor>0</minor>
   </specVersion>
   <serviceStateTable>
-    <stateVariable sendEvents="yes">
+    <stateVariable sendEvents="no">
       <name>Volume</name>
       <dataType>integer</dataType>
       <defaultValue>0</defaultValue>
     </stateVariable>
-    <stateVariable sendEvents="yes">
+    <stateVariable sendEvents="no">
       <name>Mute</name>
       <dataType>boolean</dataType>
-      <defaultValue>false</defaultValue>
+      <defaultValue>0</defaultValue>
     </stateVariable>
   </serviceStateTable>
   <actionList>

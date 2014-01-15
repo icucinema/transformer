@@ -14,19 +14,20 @@ class Audio(Service):
     self.volume = 0
     self.mute = False
 
-    def SetMute(self, *args, **kwargs):
-      self.mute = kwargs['Mute']
-      return {}
+  def SetMute(self, *args, **kwargs):
+    self.mute = kwargs['ShouldMute']
+    print "MUTEMUTEMUTE"
+    return {}
 
-    def GetMute(self, *args, **kwargs):
-      return {'Mute': self.mute}
+  def GetMute(self, *args, **kwargs):
+    return {'IsMuted': self.mute}
 
-    def SetVolume(self, *args, **kwargs):
-      self.volume = kwargs['Volume']
-      return {}
+  def SetVolume(self, *args, **kwargs):
+    self.volume = kwargs['NewVolume']
+    return {}
 
-    def GetVolume(self, *args, **kwargs):
-      return {'Volume': self.volume}
+  def GetVolume(self, *args, **kwargs):
+    return {'CurrentVolume': self.volume}
 
 if __name__ == "__main__":
   device = CP500()
