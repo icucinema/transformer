@@ -16,34 +16,24 @@ class CP500Controller(ControlPoint):
     print "Found CP500"
     self.dev = dev
 
-  def volmax(self, device):
-    d = device.get_service_by_type(service)
-    d.SetVolume(NewVolume=99)
+  def setvol(self, device, vol):
+    s = device.get_service_by_type(service)
+    s.SetVolume(NewVolume=vol)
 
-  def volmin(self, device):
+  def setmute(self, device, mute):
     d = device.get_service_by_type(service)
-    d.SetVolume(NewVolume=0)
-
-  def mute(self, device):
-    d = device.get_service_by_type(service)
-    d.SetMute(ShouldMute='1')
-
-  def unmute(self, device):
-    d = device.get_service_by_type(service)
-    d.SetMute(ShouldMute='0')
+    d.SetMute(ShouldMute=mute)
 
   def main(self):
-    commands = {'volmax': self.volmax,
-                'volmin': self.volmin,
-                'mute':   self.mute,
-                'unmute': self.unmute}
+    commands = {'vol': self.setvol,
+                'mute': self.setmute,}
 
     while True:
-      i = raw_input('! ').strip()
-      if i not in commands:
+      i = raw_input('! ').strip().split(' ')
+      if i[0] not in commands:
         print "?"
       else:
-        commands[i](self.dev)
+        commands[i[0]](self.dev, i[1])
 
 ctl = CP500Controller()
 ctl.start()
