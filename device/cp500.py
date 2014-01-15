@@ -1,5 +1,5 @@
-from brisa.core.reactors import install_default_reactor
-reactor = install_default_reactor()
+from brisa.core.reactors._select import *
+reactor = SelectReactor()
 import os
 from brisa.upnp.device import Device, Service
 

@@ -1,5 +1,5 @@
-from brisa.core.reactors import install_default_reactor
-reactor = install_default_reactor()
+from brisa.core.reactors._select import *
+reactor = SelectReactor()
 
 from brisa.upnp.control_point import ControlPoint
 from brisa.core.threaded_call import run_async_function
