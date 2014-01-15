@@ -35,7 +35,7 @@ class CP500Controller(ControlPoint):
 
     while True:
       input = raw_input('! ').strip()
-      if input[0] not in commands:
+      if input not in commands:
         print "?"
       else:
         commands[input]()
