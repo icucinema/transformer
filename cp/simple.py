@@ -24,9 +24,17 @@ class CP500Controller(ControlPoint):
     d = device.get_service_by_type(service)
     d.SetMute(ShouldMute=mute)
 
+  def setsource(self, device, source):
+    sourceName = {'mono' : 0, 'sr' : 2, 'digital': 3, '70mm' : 5}.get(source, None)
+    if sourceName is None:
+      return
+    d = device.get_service_by_type(service)
+    d.SetSource(NewSource=sourceName)
+
   def main(self):
     commands = {'vol': self.setvol,
-                'mute': self.setmute,}
+                'mute': self.setmute,
+                'source': self.setsource,}
 
     while True:
       i = raw_input('! ').strip().split(' ')

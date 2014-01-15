@@ -15,6 +15,11 @@
       <dataType>boolean</dataType>
       <defaultValue>0</defaultValue>
     </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>Source</name>
+      <dataType>integer</dataType>
+      <defaultValue></defaultValue>
+    </stateVariable>
   </serviceStateTable>
   <actionList>
     <action>
@@ -55,6 +60,27 @@
           <name>CurrentVolume</name>
           <direction>out</direction>
           <relatedStateVariable>Volume</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+
+    <action>
+      <name>SetSource</name>
+      <argumentList>
+        <argument>
+          <name>NewSource</name>
+          <direction>in</direction>
+          <relatedStateVariable>Source</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>GetSource</name>
+      <argumentList>
+        <argument>
+          <name>CurrentSource</name>
+          <direction>out</direction>
+          <relatedStateVariable>Source</relatedStateVariable>
         </argument>
       </argumentList>
     </action>

@@ -13,10 +13,10 @@ class Audio(Service):
         '', os.getcwd() + '/Audio-scpd.xml')
     self.volume = 0
     self.mute = False
+    self.source = 0
 
   def SetMute(self, *args, **kwargs):
     self.mute = kwargs['ShouldMute']
-    print "MUTEMUTEMUTE"
     return {}
 
   def GetMute(self, *args, **kwargs):
@@ -28,6 +28,13 @@ class Audio(Service):
 
   def GetVolume(self, *args, **kwargs):
     return {'CurrentVolume': self.volume}
+
+  def SetSource(self, *args, **kwargs):
+    self.volume = kwargs['NewSource']
+    return {}
+
+  def GetSource(self, *args, **kwargs):
+    return {'CurrentSource': self.volume}
 
 if __name__ == "__main__":
   device = CP500()
