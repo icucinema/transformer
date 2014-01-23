@@ -4,27 +4,26 @@ reactor = install_default_reactor()
 from brisa.upnp.control_point import ControlPoint
 from brisa.core.threaded_call import run_async_function
 
-service = 'urn:schemas-upnp-org:service:Audio:1'
-cp500_type = 'urn:schemas-upnp-org:device:CP500:1'
-
 class CP500Controller(ControlPoint):
   def __init__(self):
     ControlPoint.__init__(self)
+    self.service = 'urn:schemas-upnp-org:service:Audio:1'
+    self.utype = 'urn:schemas-upnp-porg:device:CP500:1'
 
   def volmax(self, device):
-    d = device.get_service_by_type(service)
+    d = device.get_service_by_type(self.service)
     d.SetVolume(99)
 
   def volmin(self, device):
-    d = device.get_service_by_type(service)
+    d = device.get_service_by_type(self.service)
     d.SetVolume(0)
 
   def mute(self, device):
-    d = device.get_service_by_type(service)
+    d = device.get_service_by_type(self.service)
     d.SetMute(True)
 
   def unmute(self, device):
-    d = device.get_service_by_type(service)
+    d = device.get_service_by_type(self.service)
     d.SetMute(False)
 
   def main(self):
@@ -42,7 +41,7 @@ class CP500Controller(ControlPoint):
 
 ctl = CP500Controller()
 ctl.start()
-ctl.start_search(2, cp500_type)
+ctl.start_search(2, ctl.utype)
 run_async_function(ctl.main)
 
 reactor.add_after_stop_func(ctl.destroy)
