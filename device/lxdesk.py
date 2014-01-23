@@ -2,10 +2,15 @@ from brisa.core.reactors._select import *
 reactor = SelectReactor()
 import os
 from brisa.upnp.device import Device, Service
+import dmx
+import parallel
 
 class LXDesk(Device):
   def __init__(self):
     Device.__init__(self, 'urn:schemas-icucinema-co-uk:device:LXDesk:1', 'LXDesk')
+    self.par = parallel.Parallel("LPTN")
+    self.mn = dmx.ManolatorDmxController(self.par)
+    self.mn.start()
 
 class Lighting(Service):
   def __init__(self):
