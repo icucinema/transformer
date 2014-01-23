@@ -4,7 +4,7 @@ reactor = SelectReactor()
 from brisa.upnp.control_point import ControlPoint
 from brisa.core.threaded_call import run_async_function
 
-def main(self):
+def main():
   commands = {'vol':    cp500_ctl.setvol,
               'mute':   cp500_ctl.setmute,
               'source': cp500_ctl.setsource,
@@ -14,7 +14,10 @@ def main(self):
   while True:
     i = raw_input('! ').strip().split(' ')
     if i[0] not in commands:
-      print "?"
+      if i[0] == "?":
+        print ', '.join(list(commands.viewkeys()))
+      else:
+        print "?"
     else:
       commands[i[0]](self.dev, i[1])
 
