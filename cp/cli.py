@@ -1,51 +1,59 @@
-from brisa.core.reactors import install_default_reactor
-reactor = install_default_reactor()
+from brisa.core.reactors._select import *
+reactor = SelectReactor()
 
 from brisa.upnp.control_point import ControlPoint
 from brisa.core.threaded_call import run_async_function
 
-def main():
-  commands = {'volmax': cp500_ctl.volmax,
-              'volmin': cp500_ctl.volmin,
-              'mute':   cp500_ctl.mute,
-              'unmute': cp500_ctl.unmute,
+def main(self):
+  commands = {'vol':    cp500_ctl.setvol,
+              'mute':   cp500_ctl.setmute,
+              'source': cp500_ctl.setsource,
               'raise':  screen_ctl.up,
-              'lower':  screen_ctl.down}
+              'lower':  screen_ctl.down,}
 
   while True:
-    input = raw_input('! ').strip()
-    if input[0] not in commands:
+    i = raw_input('! ').strip().split(' ')
+    if i[0] not in commands:
       print "?"
     else:
-      commands[input]()
+      commands[i[0]](self.dev, i[1])
 
 class CP500Controller(ControlPoint):
   def __init__(self):
     ControlPoint.__init__(self)
+    self.subscribe('new_device_event', self.device_found)
     self.service = 'urn:schemas-upnp-org:service:Audio:1'
     self.utype = 'urn:schemas-upnp-porg:device:CP500:1'
 
-  def volmax(self, device):
-    d = device.get_service_by_type(self.service)
-    d.SetVolume(99)
+  def device_found(self, dev):
+    print "Found CP500"
+    self.dev = dev
 
-  def volmin(self, device):
-    d = device.get_service_by_type(self.service)
-    d.SetVolume(0)
+  def setvol(self, device, vol):
+    s = device.get_self.service_by_type(self.service)
+    s.SetVolume(NewVolume=vol)
 
-  def mute(self, device):
-    d = device.get_service_by_type(self.service)
-    d.SetMute(True)
+  def setmute(self, device, mute):
+    d = device.get_self.service_by_type(self.service)
+    d.SetMute(ShouldMute=mute)
 
-  def unmute(self, device):
-    d = device.get_service_by_type(self.service)
-    d.SetMute(False)
+  def setsource(self, device, source):
+    sourceName = {'cd' : 1, 'digital' : 3, 'pc': 4, '35mm' : 8}.get(source, None)
+    if sourceName is None:
+      return
+    d = device.get_self.service_by_type(self.service)
+    d.SetSource(NewSource=sourceName)
 
 class ScreenController(ControlPoint):
   def __init__(self):
     ControlPoint.__init__(self)
+    self.subscribe('new_device_event', self.device_found)
     self.service = 'urn:schemas-icucinema-co-uk:service:RetractingScreen:1'
     self.utype = 'urn:schemas-icucinema-co-uk:device:RetractingScreen:1'
+
+  def device_found(self, dev):
+    print "Found Screen"
+    self.dev = dev
 
   def up(self, device):
     d = device.get_service_by_type(self.service)
@@ -66,5 +74,4 @@ screen_ctl.start_search(2, screen_ctl.utype)
 reactor.add_after_stop_func(screen_ctl.destroy)
 
 run_async_function(main)
-
 reactor.main()
