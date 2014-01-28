@@ -16,14 +16,15 @@ class LXDesk(Device):
 
   def __init__(self):
     Device.__init__(self, 'urn:schemas-icucinema-co-uk:device:LXDesk:1', 'LXDesk')
-    self.par = parallel.Parallel("LPTN")
-    self.mn = dmx.ManolatorDmxController(self.par)
-    self.mn.start()
 
 class Lighting(Service):
   def __init__(self):
     Service.__init__(self, 'Lighting', 'urn:schemas-icucinema-co-uk:service:Lighting:1',
         '', os.getcwd() + '/Lighting-scpd.xml')
+    self.par = parallel.Parallel("LPTN")
+    self.mn = dmx.ManolatorDmxController(self.par)
+    self.mn.start()
+
 
 if __name__ == "__main__":
   device = LXDesk()
