@@ -9,7 +9,8 @@ def main():
               'mute':   cp500_ctl.setmute,
               'source': cp500_ctl.setsource,
               'raise':  screen_ctl.up,
-              'lower':  screen_ctl.down,}
+              'lower':  screen_ctl.down,
+              'lights': lx_ctl.set}
 
   while True:
     i = raw_input('! ').strip().split(' ')
@@ -19,7 +20,10 @@ def main():
       else:
         print "?"
     else:
-      commands[i[0]](self.dev, i[1])
+      if length(i) == 3:
+        commands[i[0]](self.dev, i[1], i[2])
+      else:
+        commands[i[0]](self.dev, i[1])
 
 class CP500Controller(ControlPoint):
   def __init__(self):
@@ -66,6 +70,21 @@ class ScreenController(ControlPoint):
     d = device.get_service_by_type(self.service)
     d.LowerScreen()
 
+class LXController(ControlPoint):
+  def __init__(self):
+    ControlPoint.__init__(self)
+    self.subscribe('new_device_event', self.device_found)
+    self.service = 'urn:schemas-icucinema-co-uk:service:Lighting:1'
+    self.utype = 'urn:schemas-icucinema-co-uk:device:LXDesk:1'
+
+  def device_found(self, dev):
+    print "Found Lighting controller"
+    self.dev = dev
+
+  def set(self, up, down):
+    d = device.get_service_by_type(self.service)
+    d.SetLevels(UpLevel=up, DownLevel=down)
+
 cp500_ctl = CP500Controller()
 cp500_ctl.start()
 cp500_ctl.start_search(2, cp500_ctl.utype)
@@ -75,6 +94,11 @@ screen_ctl = ScreenController()
 screen_ctl.start()
 screen_ctl.start_search(2, screen_ctl.utype)
 reactor.add_after_stop_func(screen_ctl.destroy)
+
+lx_ctl = LXController()
+lx_ctl.start()
+lx_ctl.start_search(2, lx_ctl.utype)
+reactor.add_after_stop_func(lx_ctl.destroy)
 
 run_async_function(main)
 reactor.main()
