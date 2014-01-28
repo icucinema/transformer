@@ -5,7 +5,47 @@
     <minor>0</minor>
   </specVersion>
   <serviceStateTable>
+    <stateVariable sendEvents="no">
+      <name>UpLighters</name>
+      <dataType>integer</dataType>
+      <defaultValue>0</defaultValue>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>DownLighters</name>
+      <dataType>integer</dataType>
+      <defaultValue></defaultValue>
+    </stateVariable>
   </serviceStateTable>
   <actionList>
+    <action>
+      <name>GetLevels</name>
+      <argumentList>
+        <argument>
+          <name>UpLevel</name>
+          <direction>in</direction>
+          <relatedStateVariable>UpLighters</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>DownLevel</name>
+          <direction>in</direction>
+          <relatedStateVariable>DownLighters</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>SetLevels</name>
+      <argumentList>
+        <argument>
+          <name>UpLevel</name>
+          <direction>out</direction>
+          <relatedStateVariable>UpLighters</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>DownLevel</name>
+          <direction>out</direction>
+          <relatedStateVariable>DownLighters</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
   </actionList>
 </scpd>
