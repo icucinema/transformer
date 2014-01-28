@@ -6,6 +6,14 @@ import dmx
 import parallel
 
 class LXDesk(Device):
+  #TODO: are these the right way round?
+  DMX_DOWN = 73
+  DMX_UP   = 74
+ 
+  #list of: off, dim, on
+  LEVEL_UP_MAP   = [0, 100, 255]
+  LEVEL_DOWN_MAR = [0, 0, 255]
+
   def __init__(self):
     Device.__init__(self, 'urn:schemas-icucinema-co-uk:device:LXDesk:1', 'LXDesk')
     self.par = parallel.Parallel("LPTN")
