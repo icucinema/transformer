@@ -2,7 +2,7 @@ from brisa.core.reactors._select import *
 reactor = SelectReactor()
 import os
 from brisa.upnp.device import Device, Service
-import dmx
+import cinelighting
 import parallel
 
 class LXDesk(Device):
