@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: pyparallel
+Version: 0.2
+Summary: Python Parallel Port Extension
+Home-page: http://pyserial.sourceforge.net/
+Author: Chris Liechti
+Author-email: cliechti@gmx.net
+License: Python
+Description: Python Parallel Port Extension for Win32, Linux, BSD
+Platform: UNKNOWN
