@@ -1,0 +1,11 @@
+Requirements:
+
+CherryPy (3.2.4)
+CineLighting (0.1, /home/cinema/cinema/transformer/env/src/cinelighting)
+parallel (0.2.5)
+pip (1.5)
+pyparallel (0.2)
+pyserial (2.7)
+python-brisa (0.10.1)
+setuptools (2.1)
+wsgiref (0.1.2)
