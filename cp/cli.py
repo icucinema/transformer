@@ -20,10 +20,10 @@ def main():
       else:
         print "?"
     else:
-      if length(i) == 3:
-        commands[i[0]](self.dev, i[1], i[2])
+      if len(i) == 3:
+        commands[i[0]](lx_ctl.dev, i[1], i[2])
       else:
-        commands[i[0]](self.dev, i[1])
+        commands[i[0]](lx_ctl.dev, i[1])
 
 class CP500Controller(ControlPoint):
   def __init__(self):
