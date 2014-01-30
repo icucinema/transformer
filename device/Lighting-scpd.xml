@@ -37,12 +37,12 @@
       <argumentList>
         <argument>
           <name>UpLevel</name>
-          <direction>out</direction>
+          <direction>in</direction>
           <relatedStateVariable>UpLighters</relatedStateVariable>
         </argument>
         <argument>
           <name>DownLevel</name>
-          <direction>out</direction>
+          <direction>in</direction>
           <relatedStateVariable>DownLighters</relatedStateVariable>
         </argument>
       </argumentList>
