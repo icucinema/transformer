@@ -83,7 +83,7 @@ class LXController(ControlPoint):
 
   def set(self, device, up, down):
     d = device.get_service_by_type(self.service)
-    d.SetLevels(UpLevel=up, DownLevel=down)
+    d.SetLevels(UpLevel=int(up), DownLevel=int(down))
 
 cp500_ctl = CP500Controller()
 cp500_ctl.start()

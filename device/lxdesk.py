@@ -30,7 +30,7 @@ class Lighting(Service):
     return {'Uplevel': ret[LXDesk.DMX_UP], 'DownLevel': ret[LXDesk.DMX_DOWN]}
 
   def SetLevels(self, *args, **kwargs):
-    self.mm.set_channels({LXDesk.DMX_UP: kwargs['UpLevel'], LXDesk.DMX_DOWN: kwargs['DownLevel']})
+    self.mm.set_channels({LXDesk.DMX_UP: int(kwargs['UpLevel']), LXDesk.DMX_DOWN: int(kwargs['DownLevel'])})
     return {}
 
 if __name__ == "__main__":
