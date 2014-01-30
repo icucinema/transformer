@@ -21,8 +21,8 @@ class Lighting(Service):
   def __init__(self):
     Service.__init__(self, 'Lighting', 'urn:schemas-icucinema-co-uk:service:Lighting:1',
         '', os.getcwd() + '/Lighting-scpd.xml')
-    self.par = parallel.Parallel("LPTN")
-    self.mn = dmx.ManolatorDmxController(self.par)
+    self.par = parallel.Parallel()
+    self.mn = cinelighting.ManolatorDmxController(self.par)
     self.mn.start()
 
   def GetLevels(self, *args, **kwargs):

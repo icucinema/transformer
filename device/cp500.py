@@ -55,7 +55,7 @@ class Audio(Service):
     Service.__init__(self, 'Audio', 'urn:schemas-upnp-org:service:Audio:1',
         '', os.getcwd() + '/Audio-scpd.xml')
 
-    self.serial = serial.Serial('/dev/ttyUSB0', 9600, timeout=5, bytesize=8, parity='N', stopbits=1)
+    self.serial = serial.Serial('/dev/ttyUSB1', 9600, timeout=5, bytesize=8, parity='N', stopbits=1)
 
     self.volume = 0
     self.mute = False
