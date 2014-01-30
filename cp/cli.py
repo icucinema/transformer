@@ -81,7 +81,7 @@ class LXController(ControlPoint):
     print "Found Lighting controller"
     self.dev = dev
 
-  def set(self, up, down):
+  def set(self, device, up, down):
     d = device.get_service_by_type(self.service)
     d.SetLevels(UpLevel=up, DownLevel=down)
 
