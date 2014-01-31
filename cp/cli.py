@@ -21,9 +21,9 @@ def main():
         print "?"
     else:
       if len(i) == 3:
-        commands[i[0]](lx_ctl.dev, i[1], i[2])
+        commands[i[0]](i[1], i[2])
       else:
-        commands[i[0]](lx_ctl.dev, i[1])
+        commands[i[0]](i[1])
 
 class CP500Controller(ControlPoint):
   def __init__(self):
@@ -36,19 +36,19 @@ class CP500Controller(ControlPoint):
     print "Found CP500"
     self.dev = dev
 
-  def setvol(self, device, vol):
-    s = device.get_self.service_by_type(self.service)
+  def setvol(self, vol):
+    s = self.dev.get_self.service_by_type(self.service)
     s.SetVolume(NewVolume=vol)
 
-  def setmute(self, device, mute):
-    d = device.get_self.service_by_type(self.service)
+  def setmute(self, mute):
+    d = self.dev.get_self.service_by_type(self.service)
     d.SetMute(ShouldMute=mute)
 
-  def setsource(self, device, source):
+  def setsource(self, source):
     sourceName = {'cd' : 1, 'digital' : 3, 'pc': 4, '35mm' : 8}.get(source, None)
     if sourceName is None:
       return
-    d = device.get_self.service_by_type(self.service)
+    d = self.dev.get_self.service_by_type(self.service)
     d.SetSource(NewSource=sourceName)
 
 class ScreenController(ControlPoint):
@@ -62,12 +62,12 @@ class ScreenController(ControlPoint):
     print "Found Screen"
     self.dev = dev
 
-  def up(self, device):
-    d = device.get_service_by_type(self.service)
+  def up(self):
+    d = self.dev.get_service_by_type(self.service)
     d.RaiseScreen()
 
-  def down(self, device):
-    d = device.get_service_by_type(self.service)
+  def down(self):
+    d = self.dev.get_service_by_type(self.service)
     d.LowerScreen()
 
 class LXController(ControlPoint):
@@ -81,8 +81,8 @@ class LXController(ControlPoint):
     print "Found Lighting controller"
     self.dev = dev
 
-  def set(self, device, up, down):
-    d = device.get_service_by_type(self.service)
+  def set(self, up, down):
+    d = self.dev.get_service_by_type(self.service)
     d.SetLevels(UpLevel=int(up), DownLevel=int(down))
 
 cp500_ctl = CP500Controller()
