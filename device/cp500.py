@@ -79,10 +79,8 @@ class Audio(Service):
     self.source = int(kwargs['NewSource'])
     req = CP500.makeButtonPacket(self.source)
     import binascii
-    print binascii.hexlify(bytearray(req))
     self.serial.write(bytearray(req))
     resp = self.serial.read(CP500.PKT_LEN)
-    print binascii.hexlify(resp)
     return {}
 
   def GetSource(self, *args, **kwargs):
