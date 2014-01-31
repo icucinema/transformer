@@ -29,8 +29,8 @@ class CP500Controller(ControlPoint):
   def __init__(self):
     ControlPoint.__init__(self)
     self.subscribe('new_device_event', self.device_found)
-    self.service = 'urn:schemas-upnp-org:service:Audio:1'
-    self.utype = 'urn:schemas-upnp-porg:device:CP500:1'
+    self.service = 'urn:schemas-icucinema-co-uk:service:Audio:1'
+    self.utype = 'urn:schemas-icucinema-co-uk:device:CP500:1'
 
   def device_found(self, dev):
     print "Found CP500"
