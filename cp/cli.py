@@ -37,18 +37,18 @@ class CP500Controller(ControlPoint):
     self.dev = dev
 
   def setvol(self, vol):
-    s = self.dev.get_self.service_by_type(self.service)
+    s = self.dev.get_service_by_type(self.service)
     s.SetVolume(NewVolume=vol)
 
   def setmute(self, mute):
-    d = self.dev.get_self.service_by_type(self.service)
+    d = self.dev.get_service_by_type(self.service)
     d.SetMute(ShouldMute=mute)
 
   def setsource(self, source):
     sourceName = {'cd' : 1, 'digital' : 3, 'pc': 4, '35mm' : 8}.get(source, None)
     if sourceName is None:
       return
-    d = self.dev.get_self.service_by_type(self.service)
+    d = self.dev.get_service_by_type(self.service)
     d.SetSource(NewSource=sourceName)
 
 class ScreenController(ControlPoint):
