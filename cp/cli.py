@@ -16,15 +16,17 @@ class CommandServer(SocketServer.BaseRequestHandler):
     SocketServer.BaseRequestHandler.__init__(self, request, client_address, server)
 
   def handle(self):
-    data = self.request.recv(1024).strip().split(' ')
+    data = self.request[0].strip().split(' ')
+    socket = self.request[1]
+    client_ip = self.client_address
     if data[0] not in self.commands:
-      self.request.sendall("?")
+      socket.sendto("?", client_ip)
     else:
       if len(data) == 3:
         self.commands[data[0]](data[1], data[2])
       else:
         self.commands[data[0]](data[1])
-      self.request.sendall("?")
+      socket.sendto(data[0], client_ip)
 
 class CP500Controller(ControlPoint):
   def __init__(self):
@@ -102,6 +104,6 @@ lx_ctl.start_search(2, lx_ctl.utype)
 reactor.add_after_stop_func(lx_ctl.destroy)
 
 if __name__ == "__main__":
-  server = SocketServer.TCPServer(("localhost", 9999), CommandServer)
+  server = SocketServer.UDPServer(('', 9999), CommandServer)
   run_async_function(server.serve_forever)
   reactor.main()
