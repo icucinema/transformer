@@ -6,26 +6,25 @@ from brisa.upnp.control_point import ControlPoint
 from brisa.core.threaded_call import run_async_function
 
 class CommandServer(SocketServer.BaseRequestHandler):
-  def __init__(self):
+  def __init__(self, request, client_address, server):
     self.commands = {'vol':    cp500_ctl.setvol,
-                     'mute':   cp500_ctl.setmute,
-                     'source': cp500_ctl.setsource,
-                     'raise':  screen_ctl.up,
-                     'lower':  screen_ctl.down,
-                     'lights': lx_ctl.set}
+                'mute':   cp500_ctl.setmute,
+                'source': cp500_ctl.setsource,
+                'raise':  screen_ctl.up,
+                'lower':  screen_ctl.down,
+                'lights': lx_ctl.set}
+    SocketServer.BaseRequestHandler.__init__(self, request, client_address, server)
 
   def handle(self):
-    data = self.request[0].strip().split(' ')
-    socket = self.request[1]
-
+    data = self.request.recv(1024).strip().split(' ')
     if data[0] not in self.commands:
-      socket.sendto("?", self.client_address)
+      self.request.sendall("?")
     else:
-      if len(i) == 3:
+      if len(data) == 3:
         self.commands[data[0]](data[1], data[2])
       else:
         self.commands[data[0]](data[1])
-      socket.sendto("?", self.client_address)
+      self.request.sendall("?")
 
 class CP500Controller(ControlPoint):
   def __init__(self):
@@ -103,6 +102,6 @@ lx_ctl.start_search(2, lx_ctl.utype)
 reactor.add_after_stop_func(lx_ctl.destroy)
 
 if __name__ == "__main__":
+  server = SocketServer.TCPServer(("localhost", 9999), CommandServer)
+  run_async_function(server.serve_forever)
   reactor.main()
-  server = SocketServer.UDPServer(("localhost", 9999), CommandServer)
-  run_async_function(server.serve_forever())
