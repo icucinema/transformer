@@ -1,29 +1,32 @@
 from brisa.core.reactors._select import *
 reactor = SelectReactor()
+import SocketServer
 
 from brisa.upnp.control_point import ControlPoint
 from brisa.core.threaded_call import run_async_function
 
-def main():
-  commands = {'vol':    cp500_ctl.setvol,
-              'mute':   cp500_ctl.setmute,
-              'source': cp500_ctl.setsource,
-              'raise':  screen_ctl.up,
-              'lower':  screen_ctl.down,
-              'lights': lx_ctl.set}
+class CommandServer(SocketServer.BaseRequestHandler):
+  def __init__(self, request, client_address, server):
+    self.commands = {'vol':    cp500_ctl.setvol,
+                'mute':   cp500_ctl.setmute,
+                'source': cp500_ctl.setsource,
+                'raise':  screen_ctl.up,
+                'lower':  screen_ctl.down,
+                'lights': lx_ctl.set}
+    SocketServer.BaseRequestHandler.__init__(self, request, client_address, server)
 
-  while True:
-    i = raw_input('! ').strip().split(' ')
-    if i[0] not in commands:
-      if i[0] == "?":
-        print ', '.join(list(commands.viewkeys()))
-      else:
-        print "?"
+  def handle(self):
+    data = self.request[0].strip().split(' ')
+    socket = self.request[1]
+    client_ip = self.client_address
+    if data[0] not in self.commands:
+      socket.sendto("?", client_ip)
     else:
-      if len(i) == 3:
-        commands[i[0]](i[1], i[2])
+      if len(data) == 3:
+        self.commands[data[0]](data[1], data[2])
       else:
-        commands[i[0]](i[1])
+        self.commands[data[0]](data[1])
+      socket.sendto(data[0], client_ip)
 
 class CP500Controller(ControlPoint):
   def __init__(self):
@@ -100,5 +103,7 @@ lx_ctl.start()
 lx_ctl.start_search(2, lx_ctl.utype)
 reactor.add_after_stop_func(lx_ctl.destroy)
 
-run_async_function(main)
-reactor.main()
+if __name__ == "__main__":
+  server = SocketServer.UDPServer(('', 9999), CommandServer)
+  run_async_function(server.serve_forever)
+  reactor.main()

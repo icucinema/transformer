@@ -78,7 +78,6 @@ class Audio(Service):
   def SetSource(self, *args, **kwargs):
     self.source = int(kwargs['NewSource'])
     req = CP500.makeButtonPacket(self.source)
-    import binascii
     self.serial.write(bytearray(req))
     resp = self.serial.read(CP500.PKT_LEN)
     return {}
