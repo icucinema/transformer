@@ -63,6 +63,9 @@ class Audio(Service):
 
   def SetMute(self, *args, **kwargs):
     self.mute = kwargs['ShouldMute']
+    req = CP500.makeButtonPacket('Mute')
+    self.serial.write(bytearray(req))
+    resp = self.serial.read(CP500.PKT_LEN)
     return {}
 
   def GetMute(self, *args, **kwargs):
